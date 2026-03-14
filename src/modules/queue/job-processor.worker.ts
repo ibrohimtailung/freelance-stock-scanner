@@ -7,6 +7,7 @@ import { AnalyzerService } from '../ai/analyzer.service';
 import { ProposalService } from '../ai/proposal.service';
 import { TelegramService } from '../telegram/telegram.service';
 import { QUEUE_NAMES, JOB_NAMES } from './constants/queue-names';
+import configuration from '@/config/configuration';
 
 export interface AnalyzeJobPayload {
   jobId: string;
@@ -56,7 +57,7 @@ export class JobProcessorWorker {
     // ── Step 2: Generate proposal (only if relevant enough) ───────────────
     let proposalText: string | null = null;
     // For testing, always generate a proposal regardless of matchScore
-    if (true) {
+    if (analysis.matchScore >= 60) {
       proposalText = await this.proposalService.generate(job, user);
     }
 
